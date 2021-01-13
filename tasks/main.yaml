@@ -23,13 +23,6 @@
 - name: Include OS dependent tasks
   include: "{{ ansible_os_family }}.yaml"
 
-- name: Ensure sshguard service is started and enabled on boot
-  service:
-    name: "{{ sshguard_service }}"
-    state: "{{ sshguard_service_state }}"
-    enabled: "{{ sshguard_service_enabled }}"
-  when: not molecule | default(false)
-
 - name: Configure sshguard and whitelist from templates
   template:
     src: "sshguard/{{ item }}.j2"
@@ -39,3 +32,10 @@
     mode: '0644'
   with_items: "{{ sshguard_config_items }}"
   notify: restart sshguard service
+
+- name: Ensure sshguard service is started and enabled on boot
+  service:
+    name: "{{ sshguard_service }}"
+    state: "{{ sshguard_service_state }}"
+    enabled: "{{ sshguard_service_enabled }}"
+  when: not molecule | default(false)
