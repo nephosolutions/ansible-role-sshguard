@@ -13,7 +13,10 @@
 # limitations under the License.
 
 ---
-sshguard_config_items:
-  - whitelist
-
 sshguard_config_path: /etc
+
+# Full path to backend executable
+sshguard_backend: /usr/libexec/sshguard/sshg-fw-firewalld
+
+# Shell command that provides logs on standard output. Example: ssh and sendmail from systemd journal:
+sshguard_logreader: LANG=C /usr/bin/journalctl -afb -p info -n1 -t sshd -o cat
